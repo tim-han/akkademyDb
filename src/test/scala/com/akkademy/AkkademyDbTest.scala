@@ -3,10 +3,10 @@ package com.akkademy
 import akka.actor.ActorSystem
 import akka.testkit.TestActorRef
 import akka.util.Timeout
-import org.scalatest.{FunSpecLike, FunSuite, Matchers}
+import com.akkademy.messages.SetRequest
+import org.scalatest.{FunSpecLike, Matchers}
 
 import scala.concurrent.duration._
-import com.akkademy.messages.SetRequest
 
 class AkkademyDbTest extends FunSpecLike with Matchers {
   implicit val system = ActorSystem()
