@@ -1,12 +1,12 @@
 package com.akkademy
 
 import akka.actor.{ActorRef, ActorSystem, Props}
+import akka.pattern.ask
 import akka.util.Timeout
 import org.scalatest.{FunSpecLike, Matchers}
-import akka.pattern.ask
 
-import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 
 /**
   * @author tim.han
@@ -75,6 +75,25 @@ class AskExampleTest extends FunSpecLike with Matchers {
       }
     }
   }
+
+  describe("Chaining futures with handling exception") {
+    it("should print to console Pong") {
+      askPong("Ping")
+        .flatMap(x => askPong("Ping" + x))
+        .recover({ case t: Exception => "There was an error"} )
+    }
+  }
+
+  describe("Handling list of future") {
+    it("should print to ...") {
+      val listOfFutures: List[Future[String]] =
+        List("Pong", "Pong", "failed").map(x => askPong(x).recover { case t: Exception => ""} )
+
+      val futureOfList: Future[List[String]] = Future.sequence(listOfFutures)
+    }
+  }
+
+
 
 
   private def askPong(msg: String): Future[String] =
